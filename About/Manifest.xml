@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Manifest>
+
+	<identifier>ProstheticCombatframework</identifier>
+	<version>1.0.0.0</version>
+	<!-- <incompatibleWith>
+		<li>SomeOtherMod</li>
+	</incompatibleWith> -->
+	<!-- <loadBefore>
+		<li>SomeOtherMod</li>
+	</loadBefore> -->
+	<loadAfter>
+		<li>MedicalSystemExpansion</li>
+	</loadAfter>
+	<showCrossPromotions>true</showCrossPromotions>
+	<!-- <manifestUri>https://rawgit.com/FluffierThanThou/ModManager/master/About/Manifest.xml</manifestUri> -->
+	<!-- <downloadUri>https://github.com/FluffierThanThou/ModManager/releases/latest</downloadUri> -->
+
+</Manifest>
