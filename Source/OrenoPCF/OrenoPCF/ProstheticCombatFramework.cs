@@ -7,9 +7,10 @@ namespace OrenoPCF;
 [StaticConstructorOnStartup]
 public class ProstheticCombatFramework
 {
-	static ProstheticCombatFramework()
-	{
-		Harmony harmony = new Harmony("OrenoPCF");
-		harmony.PatchAll(Assembly.GetExecutingAssembly());
-	}
+    public static readonly ThingDef LogPlaceholder = DefDatabase<ThingDef>.GetNamed("PCF_LogPlaceholder");
+
+    static ProstheticCombatFramework()
+    {
+        new Harmony("OrenoPCF").PatchAll(Assembly.GetExecutingAssembly());
+    }
 }

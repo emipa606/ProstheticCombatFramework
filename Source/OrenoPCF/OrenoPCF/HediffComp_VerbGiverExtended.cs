@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,111 +7,116 @@ namespace OrenoPCF;
 
 public class HediffComp_VerbGiverExtended : HediffComp, IVerbOwner
 {
-	public VerbTracker verbTracker;
+    private readonly int autoAttackFrequency = 100;
 
-	public Verb rangedVerb;
+    private int autoAttackTick;
 
-	public string rangedVerbLabel;
+    public bool canAttack;
 
-	public string rangedVerbDescription;
+    public bool canAutoAttack = true;
 
-	public string rangedVerbIconPath;
+    public Verb rangedVerb;
 
-	public float rangedVerbIconAngle;
+    public string rangedVerbDescription;
 
-	public Vector2 rangedVerbIconOffset;
+    public float rangedVerbIconAngle;
 
-	public float rangedVerbWarmupTime;
+    public Vector2 rangedVerbIconOffset;
 
-	public bool canAttack = false;
+    public string rangedVerbIconPath;
 
-	public bool canAutoAttack = true;
+    public string rangedVerbLabel;
 
-	private int autoAttackTick = 0;
+    public float rangedVerbWarmupTime;
+    public VerbTracker verbTracker;
 
-	private readonly int autoAttackFrequency = 100;
+    public HediffComp_VerbGiverExtended()
+    {
+        verbTracker = new VerbTracker(this);
+    }
 
-	public HediffCompProperties_VerbGiverExtended Props => (HediffCompProperties_VerbGiverExtended)props;
+    public HediffCompProperties_VerbGiverExtended Props => (HediffCompProperties_VerbGiverExtended)props;
 
-	public List<Verb> AllVerbs => verbTracker.AllVerbs;
+    public List<Verb> AllVerbs => verbTracker.AllVerbs;
 
-	public VerbTracker VerbTracker => verbTracker;
+    public VerbTracker VerbTracker => verbTracker;
 
-	public List<VerbProperties> VerbProperties => Props.verbs;
+    public List<VerbProperties> VerbProperties => Props.verbs;
 
-	public List<Tool> Tools => null;
+    public List<Tool> Tools => null;
 
-	Thing IVerbOwner.ConstantCaster => base.Pawn;
+    Thing IVerbOwner.ConstantCaster => Pawn;
 
-	ImplementOwnerTypeDef IVerbOwner.ImplementOwnerTypeDef => ImplementOwnerTypeDefOf.Hediff;
+    ImplementOwnerTypeDef IVerbOwner.ImplementOwnerTypeDef => ImplementOwnerTypeDefOf.Hediff;
 
-	public HediffComp_VerbGiverExtended()
-	{
-		verbTracker = new VerbTracker(this);
-	}
+    string IVerbOwner.UniqueVerbOwnerID()
+    {
+        return $"{parent.GetUniqueLoadID()}_{parent.comps.IndexOf(this)}";
+    }
 
-	public void InitializeRangedVerb()
-	{
-		rangedVerb = AllVerbs.Where((Verb verbs) => !verbs.IsMeleeAttack).FirstOrDefault();
-		foreach (PCF_VerbProperties verbsProperty in Props.verbsProperties)
-		{
-			VerbProperties verbProps = rangedVerb.verbProps;
-			if (verbProps.label == verbsProperty.label)
-			{
-				rangedVerbLabel = verbsProperty.label;
-				rangedVerbDescription = verbsProperty.description;
-				rangedVerbIconPath = verbsProperty.uiIconPath;
-				rangedVerbIconAngle = verbsProperty.uiIconAngle;
-				rangedVerbIconOffset = verbsProperty.uiIconOffset;
-			}
-		}
-	}
+    bool IVerbOwner.VerbsStillUsableBy(Pawn p)
+    {
+        return p.health.hediffSet.hediffs.Contains(parent);
+    }
 
-	public override void CompPostMake()
-	{
-		base.CompPostMake();
-		InitializeRangedVerb();
-	}
+    public void InitializeRangedVerb()
+    {
+        rangedVerb = AllVerbs.FirstOrDefault(verbs => !verbs.IsMeleeAttack);
+        foreach (var verbsProperty in Props.verbsProperties)
+        {
+            var verbProps = rangedVerb.verbProps;
+            if (verbProps.label != verbsProperty.label)
+            {
+                continue;
+            }
 
-	public override void CompExposeData()
-	{
-		base.CompExposeData();
-		Scribe_Deep.Look(ref verbTracker, "verbTracker", this);
-		if (Scribe.mode == LoadSaveMode.PostLoadInit && verbTracker == null)
-		{
-			verbTracker = new VerbTracker(this);
-		}
-		Scribe_Values.Look(ref canAutoAttack, "canAutoAttack", defaultValue: true);
-		if (Scribe.mode == LoadSaveMode.PostLoadInit && (rangedVerb == null || rangedVerbLabel == null))
-		{
-			InitializeRangedVerb();
-		}
-	}
+            rangedVerbLabel = verbsProperty.label;
+            rangedVerbDescription = verbsProperty.description;
+            rangedVerbIconPath = verbsProperty.uiIconPath;
+            rangedVerbIconAngle = verbsProperty.uiIconAngle;
+            rangedVerbIconOffset = verbsProperty.uiIconOffset;
+        }
+    }
 
-	public override void CompPostTick(ref float severityAdjustment)
-	{
-		base.CompPostTick(ref severityAdjustment);
-		verbTracker.VerbsTick();
-		if (autoAttackTick < Find.TickManager.TicksGame)
-		{
-			canAttack = true;
-			autoAttackTick = Find.TickManager.TicksGame + (int)Rand.Range(0.8f * (float)autoAttackFrequency, 1.2f * (float)autoAttackFrequency);
-		}
-	}
+    public override void CompPostMake()
+    {
+        base.CompPostMake();
+        InitializeRangedVerb();
+    }
 
-	public override void CompPostPostRemoved()
-	{
-		base.CompPostPostRemoved();
-		PCF_VanillaExtender.ResetIcons();
-	}
+    public override void CompExposeData()
+    {
+        base.CompExposeData();
+        Scribe_Deep.Look(ref verbTracker, "verbTracker", this);
+        if (Scribe.mode == LoadSaveMode.PostLoadInit && verbTracker == null)
+        {
+            verbTracker = new VerbTracker(this);
+        }
 
-	string IVerbOwner.UniqueVerbOwnerID()
-	{
-		return parent.GetUniqueLoadID() + "_" + parent.comps.IndexOf(this);
-	}
+        Scribe_Values.Look(ref canAutoAttack, "canAutoAttack", true);
+        if (Scribe.mode == LoadSaveMode.PostLoadInit && (rangedVerb == null || rangedVerbLabel == null))
+        {
+            InitializeRangedVerb();
+        }
+    }
 
-	bool IVerbOwner.VerbsStillUsableBy(Pawn p)
-	{
-		return p.health.hediffSet.hediffs.Contains(parent);
-	}
+    public override void CompPostTick(ref float severityAdjustment)
+    {
+        base.CompPostTick(ref severityAdjustment);
+        verbTracker.VerbsTick();
+        if (autoAttackTick >= Find.TickManager.TicksGame)
+        {
+            return;
+        }
+
+        canAttack = true;
+        autoAttackTick = Find.TickManager.TicksGame +
+                         (int)Rand.Range(0.8f * autoAttackFrequency, 1.2f * autoAttackFrequency);
+    }
+
+    public override void CompPostPostRemoved()
+    {
+        base.CompPostPostRemoved();
+        PCF_VanillaExtender.ResetIcons();
+    }
 }

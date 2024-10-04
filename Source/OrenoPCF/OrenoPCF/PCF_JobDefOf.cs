@@ -6,10 +6,10 @@ namespace OrenoPCF;
 [DefOf]
 public static class PCF_JobDefOf
 {
-	public static JobDef PCF_AttackStaticExtended;
+    public static JobDef PCF_AttackStaticExtended;
 
-	static PCF_JobDefOf()
-	{
-		DefOfHelper.EnsureInitializedInCtor(typeof(PCF_JobDefOf));
-	}
+    static PCF_JobDefOf()
+    {
+        DefOfHelper.EnsureInitializedInCtor(typeof(PCF_JobDefOf));
+    }
 }

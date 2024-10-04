@@ -1,0 +1,4 @@
+# Changelog for ProstheticCombatFramework
+
+1.5.1 - Updated for 1.4 and 1.5, added the missing 1.1 version as well.
+
