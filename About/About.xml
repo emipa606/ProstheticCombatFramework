@@ -1,26 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
+  <name>Prosthetic Combat Framework (Continued)</name>
+  <packageId>Mlie.ProstheticCombatFramework</packageId>
+  <author>Oreno</author>
+  <url>https://github.com/emipa606/ProstheticCombatFramework</url>
+  <supportedVersions>
+    <li>1.0</li>
+    <li>1.1</li>
+    <li>1.2</li>
+    <li>1.3</li>
+    <li>1.4</li>
+    <li>1.5</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <description>[img]https://i.imgur.com/buuPQel.png[/img]
+Update of Orenos mod https://steamcommunity.com/sharedfiles/filedetails/?id=1826357123
+based on the 1.3 update by noj https://steamcommunity.com/sharedfiles/filedetails/?id=2011169338
 
-	<name>Prosthetic Combat Framework</name>
+[img]https://i.imgur.com/pufA0kM.png[/img]
 
-	<description>Credit goes to IndoOreno (https://github.com/IndoOreno/ProstheticCombatFramework), I just didn't want to see it die.</description>
+[table]
+    [tr][td][url=https://dsc.gg/mlie][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td] [td][url=https://github.com/emipa606/ProstheticCombatFramework][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]
+    [/tr]
+    [tr]
+        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]
+        [td][img]https://i.imgur.com/Be8E2qJ.png[/img][/td]
+    [/tr]
+[/table]
+	
+[img]https://i.imgur.com/Z4GOv8H.png[/img]
+For now, this mod is not classified as abandoned until a better modder makes an overhaul code or a different version with more features. Maybe in the future, I'll update it if not abandoned. Check out the ported version of [url=steamcommunity.com/sharedfiles/filedetails/?id=2011169338]PCF from another modder[/url] as a replacement for now.
 
-	<author>Oreno</author>
-	<packageId>Jon.Revivals.ProstheticCombatFramework</packageId>
-	<url>https://github.com/JonM0/Prosthetic-Combat-Framework---Revived</url>
+[b]Not Just Another Combat Prostheses Framework[/b]. An expansion of vanilla hediff verb system with advanced verb support and friendly modification via xml.
 
-	<supportedVersions>
-		<li>1.2</li>
-		<li>1.3</li>
-	</supportedVersions>
+[img]https://i.ibb.co/Fb0cCYZ/Details.png[/img]
 
-	<modDependencies>
-	</modDependencies>
-	<loadBefore>
-	</loadBefore>
-	<loadAfter>
-	</loadAfter>
-	<incompatibleWith>
-	</incompatibleWith>
+This framework allow modders to use ranged verb functionality from hediff and define custom melee attack with independent gizmo/command button. Allowing your pawn shoulder-mounted cannon to shoot while your pawn use their gun.
 
+This can be done just via xml and you can also define your custom texture for button. [b]For now this framework is mainly used for my own mod.[/b]
+
+[img]https://i.ibb.co/bB6RGn8/Load-Order.png[/img]
+
+Put this framework on top of your modlist after core or higher on mod load order with another framework.
+
+[img]https://i.ibb.co/Khjxc7y/Credits.png[/img]
+
+Thanks to Andreas Pardeike for its Harmony. Used to alter vanilla code.
+Thanks to roolo for its RunAndGun patch and the permission to use it.
+Thanks to Broken Valkyrie for its job code and the permission to use it (used when on development).
+Thanks to Marnador for preview image font.
+
+[img]https://i.imgur.com/PwoNOj4.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Post your error-log using [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] or the standalone [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader[/url] and command Ctrl+F12
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods
+[/list]</description>
+  <modVersion IgnoreIfNoMatchingField="True">1.5.1</modVersion>
 </ModMetaData>
