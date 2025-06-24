@@ -9,7 +9,7 @@ namespace OrenoPCF;
 
 public static class PCF_VanillaExtender
 {
-    public static readonly Dictionary<string, Texture2D> iconsCache = new Dictionary<string, Texture2D>();
+    private static readonly Dictionary<string, Texture2D> iconsCache = new();
 
     public static void CheckForAutoAttack(JobDriver jobDriver)
     {
@@ -28,14 +28,14 @@ public static class PCF_VanillaExtender
             if (list[index] != null && hediffComp_VerbGiverExtended.canAutoAttack &&
                 hediffComp_VerbGiverExtended.canAttack)
             {
-                var targetScanFlags = TargetScanFlags.NeedLOSToAll | TargetScanFlags.NeedThreat;
+                var losToAll = TargetScanFlags.NeedLOSToAll | TargetScanFlags.NeedThreat;
                 if (list[index].IsIncendiary_Ranged() || list[index].IsIncendiary_Melee())
                 {
-                    targetScanFlags |= TargetScanFlags.NeedNonBurning;
+                    losToAll |= TargetScanFlags.NeedNonBurning;
                 }
 
                 var thing = (Thing)PCF_AttackTargetFinder.BestShootTargetFromCurrentPosition(jobDriver.pawn,
-                    list[index], targetScanFlags);
+                    list[index], losToAll);
                 if (thing != null && !list[index].IsMeleeAttack)
                 {
                     hediffComp_VerbGiverExtended.rangedVerbWarmupTime = list[index].verbProps.warmupTime;

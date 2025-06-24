@@ -42,7 +42,7 @@ internal class Targeter_CurrentTargetUnderMouse
             Traverse.Create(__instance).Field("targetParams").SetValue(TargetingParameters.ForAttackAny());
         }
 
-        var localTargetInfo = CurrentTargetUnderMouse(__instance, true);
+        var localTargetInfo = currentTargetUnderMouse(__instance, true);
         if (!localTargetInfo.IsValid)
         {
             return true;
@@ -94,7 +94,7 @@ internal class Targeter_CurrentTargetUnderMouse
         return false;
     }
 
-    private static LocalTargetInfo CurrentTargetUnderMouse(Targeter targeter, bool mustBeHittableNowIfNotMelee)
+    private static LocalTargetInfo currentTargetUnderMouse(Targeter targeter, bool mustBeHittableNowIfNotMelee)
     {
         if (!targeter.IsTargeting)
         {
@@ -126,7 +126,7 @@ internal class Targeter_CurrentTargetUnderMouse
             var canHitTarget = false;
             foreach (var pawn in targeter.targetingSourceAdditionalPawns)
             {
-                var targetingVerb = GetTargetingVerb(targeter, pawn);
+                var targetingVerb = getTargetingVerb(targeter, pawn);
                 if (targetingVerb == null || !targetingVerb.CanHitTarget(localTargetInfo))
                 {
                     continue;
@@ -149,7 +149,7 @@ internal class Targeter_CurrentTargetUnderMouse
         return localTargetInfo;
     }
 
-    private static Verb GetTargetingVerb(Targeter targeter, Pawn pawn)
+    private static Verb getTargetingVerb(Targeter targeter, Pawn pawn)
     {
         return pawn.equipment.AllEquipmentVerbs.FirstOrDefault(x =>
             x.verbProps == targeter.targetingSource.GetVerb.verbProps && x is not Verb_CastPsycast);

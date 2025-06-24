@@ -20,7 +20,7 @@ internal class Pawn_DraftController_GetGizmos
                  select c)
         {
             var verbGiverExtended = (HediffComp_VerbGiverExtended)hediffComp;
-            var command_Toggle = new Command_Toggle
+            var commandToggle = new Command_Toggle
             {
                 isActive = () => verbGiverExtended.canAutoAttack,
                 toggleAction = delegate { verbGiverExtended.canAutoAttack = !verbGiverExtended.canAutoAttack; },
@@ -34,15 +34,15 @@ internal class Pawn_DraftController_GetGizmos
             };
             if (__instance.pawn.Faction != Faction.OfPlayer)
             {
-                command_Toggle.Disable("CannotOrderNonControlled".Translate());
+                commandToggle.Disable("CannotOrderNonControlled".Translate());
             }
 
             if (__instance.pawn.Downed)
             {
-                command_Toggle.Disable("IsIncapped".Translate(__instance.pawn.LabelShort, __instance.pawn));
+                commandToggle.Disable("IsIncapped".Translate(__instance.pawn.LabelShort, __instance.pawn));
             }
 
-            list.Add(command_Toggle);
+            list.Add(commandToggle);
             var command_HediffVerbRanged = new Command_HediffVerbRanged
             {
                 rangedComp = verbGiverExtended,

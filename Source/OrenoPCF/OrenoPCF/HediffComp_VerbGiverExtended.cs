@@ -7,7 +7,7 @@ namespace OrenoPCF;
 
 public class HediffComp_VerbGiverExtended : HediffComp, IVerbOwner
 {
-    private readonly int autoAttackFrequency = 100;
+    private const int AutoAttackFrequency = 100;
 
     private int autoAttackTick;
 
@@ -28,7 +28,7 @@ public class HediffComp_VerbGiverExtended : HediffComp, IVerbOwner
     public string rangedVerbLabel;
 
     public float rangedVerbWarmupTime;
-    public VerbTracker verbTracker;
+    private VerbTracker verbTracker;
 
     public HediffComp_VerbGiverExtended()
     {
@@ -59,7 +59,7 @@ public class HediffComp_VerbGiverExtended : HediffComp, IVerbOwner
         return p.health.hediffSet.hediffs.Contains(parent);
     }
 
-    public void InitializeRangedVerb()
+    private void initializeRangedVerb()
     {
         rangedVerb = AllVerbs.FirstOrDefault(verbs => !verbs.IsMeleeAttack);
         foreach (var verbsProperty in Props.verbsProperties)
@@ -81,7 +81,7 @@ public class HediffComp_VerbGiverExtended : HediffComp, IVerbOwner
     public override void CompPostMake()
     {
         base.CompPostMake();
-        InitializeRangedVerb();
+        initializeRangedVerb();
     }
 
     public override void CompExposeData()
@@ -96,7 +96,7 @@ public class HediffComp_VerbGiverExtended : HediffComp, IVerbOwner
         Scribe_Values.Look(ref canAutoAttack, "canAutoAttack", true);
         if (Scribe.mode == LoadSaveMode.PostLoadInit && (rangedVerb == null || rangedVerbLabel == null))
         {
-            InitializeRangedVerb();
+            initializeRangedVerb();
         }
     }
 
@@ -111,7 +111,7 @@ public class HediffComp_VerbGiverExtended : HediffComp, IVerbOwner
 
         canAttack = true;
         autoAttackTick = Find.TickManager.TicksGame +
-                         (int)Rand.Range(0.8f * autoAttackFrequency, 1.2f * autoAttackFrequency);
+                         (int)Rand.Range(0.8f * AutoAttackFrequency, 1.2f * AutoAttackFrequency);
     }
 
     public override void CompPostPostRemoved()

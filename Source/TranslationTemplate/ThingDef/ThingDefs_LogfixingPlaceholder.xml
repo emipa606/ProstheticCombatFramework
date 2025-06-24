@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: heavy charge blaster -->
+  <PCF_LogPlaceholder.label>heavy charge blaster</PCF_LogPlaceholder.label>
+  <!-- EN: A pulse-charged rapid-fire blaster for area suppressive fire. Heavy cooling allows long, deadly bursts. -->
+  <PCF_LogPlaceholder.description>A pulse-charged rapid-fire blaster for area suppressive fire. Heavy cooling allows long, deadly bursts.</PCF_LogPlaceholder.description>
+  <!-- EN: barrel -->
+  <PCF_LogPlaceholder.tools.barrel.label>barrel</PCF_LogPlaceholder.tools.barrel.label>
+  <!-- EN: heavy charge blaster -->
+  <PCF_LogPlaceholder.verbs.Verb_Shoot.label>heavy charge blaster</PCF_LogPlaceholder.verbs.Verb_Shoot.label>
+</LanguageData>

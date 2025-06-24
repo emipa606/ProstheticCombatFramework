@@ -20,7 +20,7 @@ public static class PCF_AttackTargetFinder
 
     private static readonly List<bool> tmpCanShootAtTarget = [];
 
-    public static IAttackTarget BestAttackTarget(IAttackTargetSearcher searcher, Verb verb, TargetScanFlags flags,
+    private static IAttackTarget BestAttackTarget(IAttackTargetSearcher searcher, Verb verb, TargetScanFlags flags,
         Predicate<Thing> validator = null, float minDist = 0f, float maxDist = 9999f, IntVec3 locus = default,
         float maxTravelRadiusFromLocus = float.MaxValue, bool canBash = false,
         bool canTakeTargetsCloserThanEffectiveMinRange = true)
@@ -150,21 +150,21 @@ public static class PCF_AttackTargetFinder
 
             return true;
         };
-        if (HasRangedAttack(verb))
+        if (hasRangedAttack(verb))
         {
             tmpTargets.Clear();
             tmpTargets.AddRange(searcherThing.Map.attackTargetsCache.GetPotentialTargetsFor(searcher));
             if ((byte)(flags & TargetScanFlags.NeedReachable) != 0)
             {
                 var oldValidator2 = innerValidator;
-                innerValidator = t => oldValidator2(t) && CanReach(searcherThing, t.Thing, canBash);
+                innerValidator = t => oldValidator2(t) && canReach(searcherThing, t.Thing, canBash);
             }
 
             var canAttack = false;
             foreach (var attackTarget in tmpTargets)
             {
                 if (!attackTarget.Thing.Position.InHorDistOf(searcherThing.Position, maxDist) ||
-                    !innerValidator(attackTarget) || !CanShootAtFromCurrentPosition(attackTarget, searcher, verb))
+                    !innerValidator(attackTarget) || !canShootAtFromCurrentPosition(attackTarget, searcher, verb))
                 {
                     continue;
                 }
@@ -178,7 +178,7 @@ public static class PCF_AttackTargetFinder
             {
                 tmpTargets.RemoveAll(x =>
                     !x.Thing.Position.InHorDistOf(searcherThing.Position, maxDist) || !innerValidator(x));
-                result = GetRandomShootingTargetByScore(tmpTargets, searcher, verb);
+                result = getRandomShootingTargetByScore(tmpTargets, searcher, verb);
             }
             else
             {
@@ -186,8 +186,8 @@ public static class PCF_AttackTargetFinder
                     validator: (byte)(flags & TargetScanFlags.NeedReachableIfCantHitFromMyPos) == 0 ||
                                (byte)(flags & TargetScanFlags.NeedReachable) != 0
                         ? t => innerValidator((IAttackTarget)t)
-                        : t => innerValidator((IAttackTarget)t) && (CanReach(searcherThing, t, canBash) ||
-                                                                    CanShootAtFromCurrentPosition((IAttackTarget)t,
+                        : t => innerValidator((IAttackTarget)t) && (canReach(searcherThing, t, canBash) ||
+                                                                    canShootAtFromCurrentPosition((IAttackTarget)t,
                                                                         searcher, verb)),
                     center: searcherThing.Position, searchSet: tmpTargets, maxDistance: maxDist);
             }
@@ -208,8 +208,8 @@ public static class PCF_AttackTargetFinder
         var position = searcherThing.Position;
         var map = searcherThing.Map;
         var thingReq = ThingRequest.ForGroup(ThingRequestGroup.Filth);
-        var peMode = PathEndMode.Touch;
-        var maxDanger = Danger.Deadly;
+        const PathEndMode peMode = PathEndMode.Touch;
+        const Danger maxDanger = Danger.Deadly;
         var traverseParams = TraverseParms.For(searcherPawn, maxDanger, TraverseMode.ByPawn, canBash);
         var searchRegionsMax = maxDist <= 800f ? 40 : -1;
         var attackTarget2 = (IAttackTarget)GenClosest.ClosestThingReachable(position, map, thingReq, peMode,
@@ -219,13 +219,8 @@ public static class PCF_AttackTargetFinder
             return attackTarget2;
         }
 
-        var attackTarget3 = FindBestReachableMeleeTarget(innerValidator, searcherPawn, maxDist, canBash);
-        if (attackTarget3 == null)
-        {
-            return attackTarget2;
-        }
-
-        if (searcherPawn == null)
+        var attackTarget3 = findBestReachableMeleeTarget(innerValidator, searcherPawn, maxDist, canBash);
+        if (attackTarget3 == null || searcherPawn == null)
         {
             return attackTarget2;
         }
@@ -245,7 +240,7 @@ public static class PCF_AttackTargetFinder
         }
     }
 
-    private static bool CanReach(Thing searcher, Thing target, bool canBash)
+    private static bool canReach(Thing searcher, Thing target, bool canBash)
     {
         if (searcher is Pawn pawn)
         {
@@ -267,7 +262,7 @@ public static class PCF_AttackTargetFinder
         return true;
     }
 
-    private static IAttackTarget FindBestReachableMeleeTarget(Predicate<IAttackTarget> validator, Pawn searcherPawn,
+    private static IAttackTarget findBestReachableMeleeTarget(Predicate<IAttackTarget> validator, Pawn searcherPawn,
         float maxTargDist, bool canBash)
     {
         maxTargDist = Mathf.Min(maxTargDist, 30f);
@@ -330,26 +325,26 @@ public static class PCF_AttackTargetFinder
         }
     }
 
-    private static bool HasRangedAttack(Verb verb)
+    private static bool hasRangedAttack(Verb verb)
     {
         return verb != null && !verb.verbProps.IsMeleeAttack;
     }
 
-    private static bool CanShootAtFromCurrentPosition(IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
+    private static bool canShootAtFromCurrentPosition(IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
     {
         return verb?.CanHitTargetFrom(searcher.Thing.Position, target.Thing) ?? false;
     }
 
-    private static IAttackTarget GetRandomShootingTargetByScore(List<IAttackTarget> targets,
+    private static IAttackTarget getRandomShootingTargetByScore(List<IAttackTarget> targets,
         IAttackTargetSearcher searcher, Verb verb)
     {
-        return GetAvailableShootingTargetsByScore(targets, searcher, verb)
+        return getAvailableShootingTargetsByScore(targets, searcher, verb)
             .TryRandomElementByWeight(x => x.Second, out var result)
             ? result.First
             : null;
     }
 
-    private static List<Pair<IAttackTarget, float>> GetAvailableShootingTargetsByScore(List<IAttackTarget> rawTargets,
+    private static List<Pair<IAttackTarget, float>> getAvailableShootingTargetsByScore(List<IAttackTarget> rawTargets,
         IAttackTargetSearcher searcher, Verb verb)
     {
         availableShootingTargets.Clear();
@@ -371,14 +366,14 @@ public static class PCF_AttackTargetFinder
                 continue;
             }
 
-            var canShoot = CanShootAtFromCurrentPosition(rawTargets[i], searcher, verb);
+            var canShoot = canShootAtFromCurrentPosition(rawTargets[i], searcher, verb);
             tmpCanShootAtTarget[i] = canShoot;
             if (!canShoot)
             {
                 continue;
             }
 
-            var shootingTargetScore = GetShootingTargetScore(rawTargets[i], searcher, verb);
+            var shootingTargetScore = getShootingTargetScore(rawTargets[i], searcher, verb);
             tmpTargetScores[i] = shootingTargetScore;
             if (attackTarget != null && !(shootingTargetScore > num))
             {
@@ -420,7 +415,7 @@ public static class PCF_AttackTargetFinder
         return availableShootingTargets;
     }
 
-    private static float GetShootingTargetScore(IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
+    private static float getShootingTargetScore(IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
     {
         var num = 60f;
         num -= Mathf.Min((target.Thing.Position - searcher.Thing.Position).LengthHorizontal, 40f);
@@ -442,11 +437,11 @@ public static class PCF_AttackTargetFinder
             num -= 50f;
         }
 
-        num += FriendlyFireBlastRadiusTargetScoreOffset(target, searcher, verb);
-        return num + FriendlyFireConeTargetScoreOffset(target, searcher, verb);
+        num += friendlyFireBlastRadiusTargetScoreOffset(target, searcher, verb);
+        return num + friendlyFireConeTargetScoreOffset(target, searcher, verb);
     }
 
-    private static float FriendlyFireBlastRadiusTargetScoreOffset(IAttackTarget target, IAttackTargetSearcher searcher,
+    private static float friendlyFireBlastRadiusTargetScoreOffset(IAttackTarget target, IAttackTargetSearcher searcher,
         Verb verb)
     {
         if (verb.verbProps.ai_AvoidFriendlyFireRadius <= 0f)
@@ -495,7 +490,7 @@ public static class PCF_AttackTargetFinder
         return num2;
     }
 
-    private static float FriendlyFireConeTargetScoreOffset(IAttackTarget target, IAttackTargetSearcher searcher,
+    private static float friendlyFireConeTargetScoreOffset(IAttackTarget target, IAttackTargetSearcher searcher,
         Verb verb)
     {
         if (searcher.Thing is not Pawn pawn)

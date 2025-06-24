@@ -58,7 +58,7 @@ public class JobDriver_AttackStaticExtended : JobDriver
                     {
                         EndJobWith(JobCondition.Succeeded);
                     }
-                    else if (TryStartAttack(TargetA))
+                    else if (tryStartAttack(TargetA))
                     {
                         numAttacksMade++;
                     }
@@ -93,7 +93,7 @@ public class JobDriver_AttackStaticExtended : JobDriver
         };
     }
 
-    public bool TryStartAttack(LocalTargetInfo targ)
+    private bool tryStartAttack(LocalTargetInfo targ)
     {
         if (pawn.stances.FullBodyBusy)
         {
