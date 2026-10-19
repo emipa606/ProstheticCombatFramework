@@ -7,7 +7,7 @@ using Verse.AI;
 namespace OrenoPCF.HarmonyPatches;
 
 [HarmonyPatch(typeof(Targeter), nameof(Targeter.OrderPawnForceTarget))]
-internal class Targeter_CurrentTargetUnderMouse
+internal static class Targeter_CurrentTargetUnderMouse
 {
     public static bool Prefix(Targeter __instance, ITargetingSource targetingSource)
     {

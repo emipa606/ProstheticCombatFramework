@@ -7,9 +7,9 @@ using Verse;
 namespace OrenoPCF.HarmonyPatches;
 
 [HarmonyPatch(typeof(Pawn_DraftController), "GetGizmos")]
-internal class Pawn_DraftController_GetGizmos
+internal static class Pawn_DraftController_GetGizmos
 {
-    private static void Postfix(ref IEnumerable<Gizmo> __result, Pawn_DraftController __instance)
+    public static void Postfix(ref IEnumerable<Gizmo> __result, Pawn_DraftController __instance)
     {
         var first = new List<Gizmo>(__result);
         var list = new List<Gizmo>();

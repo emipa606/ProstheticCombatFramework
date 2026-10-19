@@ -4,7 +4,7 @@ using Verse;
 namespace OrenoPCF.HarmonyPatches;
 
 [HarmonyPatch(typeof(BattleLogEntry_RangedImpact), "GenerateGrammarRequest")]
-internal class BattleLogEntry_RangedImpact_GenerateGrammarRequest
+internal static class BattleLogEntry_RangedImpact_GenerateGrammarRequest
 {
     public static void Prefix(ref ThingDef ___weaponDef, ThingDef ___projectileDef)
     {

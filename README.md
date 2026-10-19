@@ -1,13 +1,13 @@
 # [Prosthetic Combat Framework (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3342968560)
 
-![Image](https://i.imgur.com/buuPQel.png)
+![Image](https://img.litet.net/logos/Info.png)
 
 Update of Orenos mod https://steamcommunity.com/sharedfiles/filedetails/?id=1826357123
 based on the 1.3 update by noj https://steamcommunity.com/sharedfiles/filedetails/?id=2011169338
 
-![Image](https://i.imgur.com/pufA0kM.png)
+![Image](https://img.litet.net/logos/Notice.png)
 	
-![Image](https://i.imgur.com/Z4GOv8H.png)
+![Image](https://img.litet.net/logos/OriginalDescription.png)
 
 For now, this mod is not classified as abandoned until a better modder makes an overhaul code or a different version with more features. Maybe in the future, I'll update it if not abandoned. Check out the ported version of [PCF from another modder](steamcommunity.com/sharedfiles/filedetails/?id=2011169338) as a replacement for now.
 
@@ -30,13 +30,13 @@ Thanks to roolo for its RunAndGun patch and the permission to use it.
 Thanks to Broken Valkyrie for its job code and the permission to use it (used when on development).
 Thanks to Marnador for preview image font.
 
-![Image](https://i.imgur.com/PwoNOj4.png)
+![Image](https://img.litet.net/logos/ReportingIssues.png)
 
 
 
 -  See if the the error persists if you just have this mod and its requirements active.
 -  If not, try adding your other mods until it happens again.
--  Post your error-log using [HugsLib](https://steamcommunity.com/workshop/filedetails/?id=818773962) or the standalone [Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) and command Ctrl+F12
+-  Always post your log using the [Log Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404)
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
@@ -44,4 +44,4 @@ Thanks to Marnador for preview image font.
 
  
 
-[![Image](https://img.shields.io/github/v/release/emipa606/ProstheticCombatFramework?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/3342968560) | tags:  mechanized
+[![Image](https://img.shields.io/github/v/release/emipa606/ProstheticCombatFramework?label=latest%20version&style=plastic&color=9f1111&labelColor=black)](https://steamcommunity.com/sharedfiles/filedetails/changelog/3342968560) | mechanized

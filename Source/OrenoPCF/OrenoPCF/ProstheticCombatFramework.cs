@@ -5,7 +5,7 @@ using Verse;
 namespace OrenoPCF;
 
 [StaticConstructorOnStartup]
-public class ProstheticCombatFramework
+public static class ProstheticCombatFramework
 {
     public static readonly ThingDef LogPlaceholder = DefDatabase<ThingDef>.GetNamed("PCF_LogPlaceholder");
 
